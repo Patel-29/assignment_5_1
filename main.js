@@ -65,6 +65,51 @@ function create_cards(){
 
 
 }
+cardscontainer.innerHTML = "";
+
+    cardIds.forEach((id , index) => {
+        let img = document.createElement("img");
+        img.src = backImgSrc;
+        img.dataset.cardId = id;
+        img.dataset.index = index;
+        img.alt = "Memory card";
+        img.style.cursor = "pointer";
+
+        img.addEventListener("click" , onCardClick);
+
+        cardscontainer.appendChild(img);
+        cards.push(img);
+    })
+
+    updatePlayerInfo();
+
+
+}
+
+
+function onCardClick(e){
+    let img =e.target;
+
+    if(matchedcards.has(img.dataset.index) || flipcards.includes(img) || flipcards.length === 2){
+        return;
+    }
+
+    flipCard(img);
+
+    flipcards.push(img);
+
+    if (flipcards.length === 2) {
+        // Check for match after a short delay
+        setTimeout(checkForMatch, 700);
+      }
+}
+function flipCard(img){
+    let cardId = img.dataset.cardId;
+    img.src = `${cardImgSrcStart}${cardId}.png`;
+}
+function unflipCard(img){
+    img.src = backImgSrc;
+}
 
 function activateTab(tabID){
     tabButtons.forEach(btn => btn.classList.remove("active"));
