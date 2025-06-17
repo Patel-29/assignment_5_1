@@ -21,6 +21,51 @@ const playerNameoutput = getElement("#player_name");
 const numCardsSelect = getElement("#num_cards");
 const savesettings = getElement("#save_settings");
 
+function shuffle_arr(arr){
+    for(let i =arr.length -1 ; i >0 ; i--){
+        const j = Math.floor(Math.random() * (i+1));
+        [arr[i], arr[j]] = [arr[j] , arr[i]];
+    }
+    return arr;
+}
+
+function create_cards(){
+    cards=[];
+    flippedCards = [];
+    matchedcards.clear();
+    correctmatches = 0;
+    correctDisplay.textContent= "";
+    
+    let pairCount = numberscards / 2;
+    let cardIds = [];
+    for(let i=1 ; i<pairCount ;i++){
+        cardIds.push(i);
+        cardIds.push(i);
+    }
+
+    shuffle_arr(cardIds);
+
+    cardscontainer.innerHTML = "";
+
+    cardIds.forEach((id , index) => {
+        let img = getElement("#img");
+        img.src = backImgSrc;
+        img.dataset.cardId = id;
+        img.dataset.index = index;
+        img.alt = "Memory card";
+        img.style.cursor = "pointer";
+
+        img.addEventListener("click" , onCardClick);
+
+        cardscontainer.appendChild(img);
+        cards.push(img);
+    })
+
+    updatePlayerInfo();
+
+
+}
+
 function activateTab(tabID){
     tabButtons.forEach(btn => btn.classList.remove("active"));
   [tabCards, tabsrules, tabsettings].forEach(tab => tab.classList.add("hide"));
