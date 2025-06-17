@@ -7,6 +7,14 @@ const blankImgSrc = "images/blank.png";
 const cardImgSrcStart = "images/card_";
 
 // get elements
+let numberscards = 16;
+let cards = [];
+let flipcards = [];
+let matchedcards = new Set();
+let correctmatches = 0;
+let playerName = "";
+let high_score = 0;
+
 const tabsrules = getElement("#tab_rules");
 const tabsettings = getElement("#tab_settings");
 const tabCards = getElement("#tabs_cards");
@@ -17,7 +25,7 @@ const player_display = getElement("#player");
 const highscoredisplay = getElement("high_score");
 const correctDisplay = getElement("#correct");
 const newGamelink = getElement("#new_game a");
-const playerNameoutput = getElement("#player_name");
+const playerNameIn = getElement("#player_name");
 const numCardsSelect = getElement("#num_cards");
 const savesettings = getElement("#save_settings");
 
@@ -31,7 +39,7 @@ function shuffle_arr(arr){
 
 function create_cards(){
     cards=[];
-    flippedCards = [];
+    flipcards = [];
     matchedcards.clear();
     correctmatches = 0;
     correctDisplay.textContent= "";
@@ -46,26 +54,6 @@ function create_cards(){
     shuffle_arr(cardIds);
 
     cardscontainer.innerHTML = "";
-
-    cardIds.forEach((id , index) => {
-        let img = getElement("#img");
-        img.src = backImgSrc;
-        img.dataset.cardId = id;
-        img.dataset.index = index;
-        img.alt = "Memory card";
-        img.style.cursor = "pointer";
-
-        img.addEventListener("click" , onCardClick);
-
-        cardscontainer.appendChild(img);
-        cards.push(img);
-    })
-
-    updatePlayerInfo();
-
-
-}
-cardscontainer.innerHTML = "";
 
     cardIds.forEach((id , index) => {
         let img = document.createElement("img");
@@ -111,6 +99,7 @@ function unflipCard(img){
     img.src = backImgSrc;
 }
 
+
 function activateTab(tabID){
     tabButtons.forEach(btn => btn.classList.remove("active"));
   [tabCards, tabsrules, tabsettings].forEach(tab => tab.classList.add("hide"));
@@ -124,10 +113,10 @@ function activateTab(tabID){
 document.addEventListener("DOMContentLoaded", () => {
  
     // display cards and player info
-    playerNameInput.value = playerName;
-  numCardsSelect.value = numCards;
+    playerNameIn.value = playerName;
+  numCardsSelect.value = numberscards;
     
-
+    create_cards();
     // load settings data
     
  
